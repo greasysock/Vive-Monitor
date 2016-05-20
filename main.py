@@ -27,7 +27,7 @@ def findfromindex(find_index,dict):
         if temp_index == find_index:
             return entry
 
-log = './log.json'
+log = os.path.dirname(__file__)+'/log.json'
 
 html = htmlcap.findmyorder(config.ordernumber(),config.password())
 
