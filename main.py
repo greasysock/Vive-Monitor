@@ -20,28 +20,24 @@ def pushmessage(title,message):
       }), { "Content-type": "application/x-www-form-urlencoded" })
     conn.getresponse()
 
-log = 'log.json'
+def findfromindex(find_index,dict):
+    temp_index = 0
+    for entry in dict:
+        temp_index += 1
+        if temp_index == find_index:
+            return entry
+
+log = './log.json'
 
 html = htmlcap.findmyorder(config.ordernumber(),config.password())
 
 soup = BeautifulSoup(html)
 p = soup.findAll('p')
-search = "Order Status:"
-index = 0
 order_status = {}
-printnext = False
-for x in p:
-    try:
-        if x.string.find(search) and index <= 1:
-            index += 1
-            order_status.update({'status':stringclean(x.string)})
-            printnext = True
-        if printnext and x.string.find(search) == -1:
-            printnext = False
-            order_status.update({'info': stringclean(x.string)})
-    except:
-        continue
-print(order_status)
+
+order_status.update({'status':stringclean(findfromindex(config.search_index(),p).string)})
+order_status.update({'info':stringclean(findfromindex(config.search_index()+1,p).string)})
+
 if os.path.isfile(log):
     pass
 else:
